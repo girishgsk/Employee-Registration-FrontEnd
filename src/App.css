@@ -1,38 +1,122 @@
-.App {
+body {
+  height: 100%;
+  background: linear-gradient(180deg, #dbc3ea, #6245e5);
+}
+.container_post-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.container_post {
+  width: 90%;
+  margin: auto;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.postdata {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tables {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.tables th,
+.tables td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.tables thead {
+  background-color: #f4f4f4;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.tables-head th {
+  background-color: #007bff;
+  color: #fff;
+  text-transform: uppercase;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.tables-body tr {
+  transition: background-color 0.2s ease;
+}
+
+.tables-body tr:hover {
+  background-color: #f1f1f1;
+}
+
+.tables-body td {
+  vertical-align: middle;
+}
+
+.image img {
+  border-radius: 50%;
+}
+
+.no-data td {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+.UpdateButton,
+.deleteButton {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.UpdateButton {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.UpdateButton a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.UpdateButton:hover {
+  background-color: #218838;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+.createPostLink {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.createPostLink p {
+  font-size: 25px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.createPostLink a {
+  color: yellow;
+  text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.createPostLink a:hover {
+  text-decoration: underline;
 }
