@@ -102,7 +102,7 @@ const UpdatePosts = () => {
         const message =
           typeof e.response.data.message === "string"
             ? e.response.data.message
-            : e.response.data.message.join("<br/>");
+            : e.response.data.message;
         Swal.fire("Error!", message, "error");
       });
   };

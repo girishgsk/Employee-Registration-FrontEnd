@@ -20,12 +20,22 @@ const Post = () => {
     if (!name) {
       err = { ...err, name: true };
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
       err = { ...err, email: true };
+    } else if (!emailRegex.test(email)) {
+      err = { ...err, email: true, emailInvalid: true };
     }
+
+    const mobileRegex = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+
     if (!mobileNo) {
       err = { ...err, mobileNo: true };
+    } else if (!mobileRegex.test(mobileNo)) {
+      err = { ...err, mobileNo: true, mobileNoInvalid: true };
     }
+
     if (!Designation) {
       err = { ...err, Designation: true };
     }
@@ -63,6 +73,7 @@ const Post = () => {
 
     createPosts(formData)
       .then((res) => {
+        Swal.fire("Success!", "Employee Added successfully", "success");
         history("/");
       })
       .catch((e) => {
@@ -86,20 +97,27 @@ const Post = () => {
 
   const handleEmailChange = (e) => {
     const val = e.target.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!val) {
-      setErrors({ ...errors, email: true });
+      setErrors({ ...errors, email: true, emailInvalid: false });
+    } else if (!emailRegex.test(val)) {
+      setErrors({ ...errors, email: false, emailInvalid: true });
     } else {
-      setErrors({ ...errors, email: false });
+      setErrors({ ...errors, email: false, emailInvalid: false });
     }
     setEmail(val);
   };
 
   const handleMobileNoChange = (e) => {
     const val = e.target.value;
+    const mobileRegex = /^(\+\d{1,3}[- ]?)?\d{10}$/;
     if (!val) {
-      setErrors({ ...errors, mobileNo: true });
+      setErrors({ ...errors, mobileNo: true, mobileNoInvalid: false });
+    } else if (!mobileRegex.test(val)) {
+      setErrors({ ...errors, mobileNo: false, mobileNoInvalid: true });
     } else {
-      setErrors({ ...errors, mobileNo: false });
+      setErrors({ ...errors, mobileNo: false, mobileNoInvalid: false });
     }
     setMobileNo(val);
   };
@@ -194,8 +212,16 @@ const Post = () => {
                   onChange={handleEmailChange}
                   value={email}
                 />
-                {errors.email && (
-                  <span className="text-danger">Please enter email</span>
+                {errors?.email && (
+                  <span className="text-danger">
+                    Please enter email
+                    <br />
+                  </span>
+                )}
+                {errors?.emailInvalid && (
+                  <span className="text-danger">
+                    Please enter a valid email address
+                  </span>
                 )}
               </div>
               <div className="mt-2 form-group">
@@ -217,6 +243,11 @@ const Post = () => {
                 />
                 {errors.mobileNo && (
                   <span className="text-danger">Please enter mobile no</span>
+                )}
+                {errors?.mobileNoInvalid && (
+                  <span className="text-danger">
+                    Please enter a valid Mobile no.
+                  </span>
                 )}
               </div>
               <div className="mt-2 form-group">

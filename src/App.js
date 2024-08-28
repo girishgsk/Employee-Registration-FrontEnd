@@ -25,10 +25,11 @@ const App = () => {
           </Route>
         </Route>
         <Route element={<Navbar1 />}>
-          <Route element={<IsAuthenticated />}></Route>
-          <Route path="/post" element={<Profile />} />
-          <Route path="/createPost" element={<Post />} />
-          <Route path="/updatePost/:id" element={<UpdatePosts />} />
+          <Route element={<IsAuthenticated />}>
+            <Route path="/post" element={<Profile />} />
+            <Route path="/createPost" element={<Post />} />
+            <Route path="/updatePost/:id" element={<UpdatePosts />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

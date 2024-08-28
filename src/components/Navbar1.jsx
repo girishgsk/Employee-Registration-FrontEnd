@@ -23,7 +23,7 @@ function Navbar1() {
         <div className="container-fluid">
           <Link className="navbar-brand" to="">
             <div className="navbar-brand">
-              <h2 className="nav_name">DealsDray</h2>
+              <h2 className="nav_name">GSK Tech</h2>
             </div>
           </Link>
           <button
