@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { deletePosts, getPosts } from "../services";
+import DeleteConfirmation from "./DeleteUser";
 import "../App.css";
 const Profile = () => {
   const [data, setData] = useState([]);
+  const history = useNavigate();
+
   useEffect(() => {
     getPosts() // from axios
       .then((res) => setData(res.data.data))
@@ -14,6 +18,7 @@ const Profile = () => {
     deletePosts(id)
       .then((res) => {
         setData(data.filter((post) => post._id !== id));
+        history("/post");
       })
       .catch((err) => console.log(err));
   };
@@ -27,9 +32,10 @@ const Profile = () => {
                 <th>id</th>
                 <th>name</th>
                 <th>email</th>
-                <th>image</th>
+                <th>Profile</th>
                 <th>mobileNo</th>
-                <th>Designation</th>
+                <th>Role</th>
+                <th>User_status</th>
                 <th>gender</th>
                 <th>course</th>
                 <th>created_date</th>
@@ -61,10 +67,15 @@ const Profile = () => {
                       </td>
                       <td>{data.mobileNo}</td>
                       <td>{data.Designation}</td>
+                      <td>{data.status}</td>
                       <td>{data.gender}</td>
                       <td>{data.course}</td>
-                      <td>{data.created_date}</td>
-                      <td>{data.updated_date}</td>
+                      <td>
+                        {new Date(data.created_date).toLocaleDateString()}
+                      </td>
+                      <td>
+                        {new Date(data.updated_date).toLocaleDateString()}
+                      </td>
 
                       <td>
                         <button className="UpdateButton">
@@ -72,12 +83,17 @@ const Profile = () => {
                         </button>
                       </td>
                       <td>
-                        <button
+                        {/* <button
                           className="deleteButton"
-                          onClick={() => handleDelete(data._id)}
+                          // onClick={() => setShowModal(true)}
+                          onClick={() => showRemoveConfirmation(data._id)}
                         >
                           Delete
-                        </button>
+                        </button> */}
+                        <DeleteConfirmation
+                          id={data._id}
+                          onDelete={handleDelete}
+                        />
                       </td>
                     </tr>
                   ))
@@ -93,7 +109,7 @@ const Profile = () => {
       </div>
       <div className="createPostLink">
         <p>
-          want to Create Post ?<Link to="/createPost">Create Post</Link>
+          want to Create Post ? <Link to="/createPost">Create Post</Link>
         </p>
       </div>
     </>

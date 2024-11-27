@@ -11,6 +11,7 @@ const Post = () => {
   const [email, setEmail] = useState("");
   const [mobileNo, setMobileNo] = useState("");
   const [Designation, setDesignation] = useState("");
+  const [status, setStatus] = useState("");
   const [gender, setGender] = useState("");
   const [course, setCourse] = useState([]);
 
@@ -38,6 +39,9 @@ const Post = () => {
 
     if (!Designation) {
       err = { ...err, Designation: true };
+    }
+    if (!status) {
+      err = { ...err, status: true };
     }
     if (!gender) {
       err = { ...err, gender: true };
@@ -68,6 +72,7 @@ const Post = () => {
     formData.append("image", image);
     formData.append("mobileNo", mobileNo);
     formData.append("Designation", Designation);
+    formData.append("status", status);
     formData.append("gender", gender);
     formData.append("course", course.join(","));
 
@@ -77,6 +82,7 @@ const Post = () => {
         history("/");
       })
       .catch((e) => {
+        console.log(e);
         const message =
           typeof e.response.data.message === "string"
             ? e.response.data.message
@@ -141,6 +147,15 @@ const Post = () => {
     }
     setGender(val);
   };
+  const handleStatusChange = (e) => {
+    const val = e.target.value;
+    if (!val) {
+      setErrors({ ...errors, status: true });
+    } else {
+      setErrors({ ...errors, status: false });
+    }
+    setStatus(val);
+  };
 
   const handleCheckboxChange = (e) => {
     const value = e.target.value;
@@ -155,7 +170,6 @@ const Post = () => {
     }
     setCourse(updatedCourse);
   };
-
   const handleImageChange = (e) => {
     const val = e.target.files[0];
     if (!val) {
@@ -274,6 +288,35 @@ const Post = () => {
                   <span className="text-danger">Please select designation</span>
                 )}
               </div>
+
+              <div className="mt-2 form-group">
+                <label htmlFor="status" className="form-label">
+                  status
+                </label>
+                <div>
+                  <input
+                    type="radio"
+                    name="status"
+                    value="active"
+                    onChange={handleStatusChange}
+                    checked={status === "active"}
+                  />
+                  Active
+                  <input
+                    type="radio"
+                    name="status"
+                    value="in-Active"
+                    onChange={handleStatusChange}
+                    checked={status === "in-Active"}
+                    className="ms-2"
+                  />
+                  In-Active
+                </div>
+                {errors.gender && (
+                  <span className="text-danger">Please select Status</span>
+                )}
+              </div>
+
               <div className="mt-2 form-group">
                 <label htmlFor="gender" className="form-label">
                   Gender

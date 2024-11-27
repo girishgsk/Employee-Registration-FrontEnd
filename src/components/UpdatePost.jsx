@@ -12,6 +12,7 @@ const UpdatePosts = () => {
   const [email, setEmail] = useState("");
   const [mobileNo, setMobileNo] = useState("");
   const [Designation, setDesignation] = useState("");
+  const [status, setStatus] = useState("");
   const [gender, setGender] = useState("");
   const [course, setCourse] = useState([]);
   const [values, setValues] = useState({
@@ -39,6 +40,7 @@ const UpdatePosts = () => {
         setEmail(data.email);
         setMobileNo(data.mobileNo);
         setDesignation(data.Designation);
+        setStatus(data.status);
         setGender(data.gender);
         setCourse(data.course.split(", "));
         setImage(null); // Keep the existing image or handle it as needed
@@ -58,8 +60,11 @@ const UpdatePosts = () => {
     if (!mobileNo) {
       err = { ...err, mobileNo: true };
     }
-    if (!Designation) {
-      err = { ...err, Designation: true };
+    // if (!Designation) {
+    //   err = { ...err, Designation: true };
+    // }
+    if (!status) {
+      err = { ...err, status: true };
     }
     if (!gender) {
       err = { ...err, gender: true };
@@ -67,10 +72,10 @@ const UpdatePosts = () => {
     if (course.length === 0) {
       err = { ...err, course: true };
     }
-    if (image === null && !image) {
-      // Handle existing image properly
-      err = { ...err, image: true };
-    }
+    // if (image === null && !image) {
+    //   // Handle existing image properly
+    //   err = { ...err, image: true };
+    // }
 
     setErrors(err);
     return Object.values(err).every((val) => !val);
@@ -86,6 +91,7 @@ const UpdatePosts = () => {
     formData.append("email", email);
     formData.append("mobileNo", mobileNo);
     formData.append("Designation", Designation);
+    formData.append("status", status);
     formData.append("gender", gender);
     formData.append("course", course.join(", "));
 
@@ -103,7 +109,12 @@ const UpdatePosts = () => {
           typeof e.response.data.message === "string"
             ? e.response.data.message
             : e.response.data.message;
-        Swal.fire("Error!", message, "error");
+        Swal.fire(
+          "Error! \n May be the Image is Not present in the folders, try to delete the user and create new",
+          message,
+          "error"
+        );
+        history("/post");
       });
   };
 
@@ -119,8 +130,8 @@ const UpdatePosts = () => {
       case "mobileNo":
         setMobileNo(value);
         break;
-      case "Designation":
-        setDesignation(value);
+      case "status":
+        setStatus(value);
         break;
       case "gender":
         setGender(value);
@@ -142,6 +153,20 @@ const UpdatePosts = () => {
       ...prevErrors,
       [name]: !value,
     }));
+  };
+
+  const handleDesignationChange = (e) => {
+    const { value } = e.target;
+    setDesignation((prevDesignation) => {
+      // Log the previous value for reference (optional)
+      // console.log("Previous Designation:", prevDesignation);
+      return value; // Replace the previous value with the new one
+    });
+
+    // Clear errors if any on valid input
+    if (value) {
+      setErrors((prevErrors) => ({ ...prevErrors, Designation: null }));
+    }
   };
 
   return (
@@ -216,45 +241,83 @@ const UpdatePosts = () => {
                 )}
               </div>
               <div className="mt-2 form-group">
-                <label htmlFor="Designation" className="form-label">
+                <label htmlFor="designation" className="form-label">
                   Designation
                 </label>
-                <input
-                  type="text"
-                  name="Designation"
-                  id="Designation"
+                <select
+                  value={Designation}
+                  name="designation"
+                  id="designation"
                   className={
                     errors.Designation
                       ? "form-control border-danger"
                       : "form-control"
                   }
-                  placeholder="Enter designation"
-                  onChange={handleChange}
-                  value={Designation}
-                />
+                  onChange={handleDesignationChange}
+                >
+                  <option value="">Select Designation</option>
+                  <option value="HR">HR</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Sales">Sales</option>
+                </select>
                 {errors.Designation && (
-                  <span className="text-danger">Please enter designation</span>
+                  <span className="text-danger">Please select designation</span>
                 )}
               </div>
+
               <div className="mt-2 form-group">
                 <label htmlFor="gender" className="form-label">
                   Gender
                 </label>
-                <input
-                  type="text"
-                  name="gender"
-                  id="gender"
-                  className={
-                    errors.gender
-                      ? "form-control border-danger"
-                      : "form-control"
-                  }
-                  placeholder="Enter gender"
-                  onChange={handleChange}
-                  value={gender}
-                />
+                <div>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Male"
+                    onChange={handleChange}
+                    checked={gender === "Male"}
+                  />
+                  Male
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Female"
+                    onChange={handleChange}
+                    checked={gender === "Female"}
+                    className="ms-2"
+                  />
+                  Female
+                </div>
                 {errors.gender && (
-                  <span className="text-danger">Please enter gender</span>
+                  <span className="text-danger">Please select gender</span>
+                )}
+              </div>
+
+              <div className="mt-2 form-group">
+                <label htmlFor="status" className="form-label">
+                  status
+                </label>
+                <div>
+                  <input
+                    type="radio"
+                    name="status"
+                    value="active"
+                    onChange={handleChange}
+                    checked={status === "active"}
+                  />
+                  Active
+                  <input
+                    type="radio"
+                    name="status"
+                    value="in-Active"
+                    onChange={handleChange}
+                    checked={status === "in-Active"}
+                    className="ms-2"
+                  />
+                  In-Active
+                </div>
+                {errors.gender && (
+                  <span className="text-danger">Please select Status</span>
                 )}
               </div>
               <div className="mt-2 form-group">
@@ -297,25 +360,44 @@ const UpdatePosts = () => {
                 <label htmlFor="image" className="form-label">
                   Image
                 </label>
-                <div>
-                  <img
-                    src={`http://localhost:3000/${values.image}`}
-                    alt={`${values.image}`}
-                    width="100"
-                    height="100"
-                  />
+                <div className="image-container row align-items-center">
+                  {/* Previous Image */}
+                  <div className="col-md-6 text-center mb-3">
+                    <h5 className="text-primary">Previous</h5>
+                    <div className="border p-3 rounded bg-light">
+                      {values.image ? (
+                        <img
+                          src={`http://localhost:3000/${values.image}`}
+                          className="img-fluid"
+                          style={{ maxWidth: "200px", maxHeight: "200px" }}
+                        />
+                      ) : (
+                        <p className="text-muted">No previous image</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Current Image */}
+                  <div className="col-md-6 text-center mb-3">
+                    <h5 className="text-primary">Current</h5>
+                    <div className="border p-3 rounded bg-light">
+                      {image ? (
+                        <img
+                          src={
+                            typeof image === "string"
+                              ? `http://localhost:3000/${image}`
+                              : URL.createObjectURL(image)
+                          }
+                          className="img-fluid"
+                          style={{ maxWidth: "200px", maxHeight: "200px" }}
+                        />
+                      ) : (
+                        <p className="text-muted">No image selected</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  {image && (
-                    <img
-                      src={`http://localhost:3000/${image}`}
-                      alt="Current"
-                      width="100"
-                      height="100"
-                    />
-                  )}
-                </div>
                 <input
                   type="file"
                   name="image"

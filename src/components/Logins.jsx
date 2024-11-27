@@ -48,6 +48,10 @@ const Login = () => {
       .then((res) => {
         // localStorage.setItem("useruserName", res?.data?.userName);
         localStorage.setItem("user", JSON.stringify(res.data?.userName));
+        Swal.fire({
+          title: "Login Success",
+          icon: "success",
+        });
         history("/post");
       })
       .catch((e) => {

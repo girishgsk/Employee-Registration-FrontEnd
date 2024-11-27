@@ -48,6 +48,10 @@ const Signup = () => {
     signup(data)
       .then((res) => {
         localStorage.setItem("useremail", res?.data?.data?.userName);
+        Swal.fire({
+          title: "Signup Success",
+          icon: "success",
+        });
         history("/");
       })
       .catch((e) => {

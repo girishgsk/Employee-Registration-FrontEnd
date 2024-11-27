@@ -39,8 +39,10 @@ function Navbar1() {
           </button>
           <div className="collapse navbar-collapse" id="navbarText">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
+              <li className="nav-item d-flex align-items-center">
                 <span className="nav-link active" aria-current="page">
+                  <i className="fas fa-user-circle me-2"></i>
+                  {/* Font Awesome icon */}
                   {userName}
                 </span>
               </li>

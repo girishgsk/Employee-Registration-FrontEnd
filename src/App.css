@@ -71,7 +71,7 @@ body {
 
 .UpdateButton,
 .deleteButton {
-  padding: 8px 12px;
+  padding: 8px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -96,6 +96,7 @@ body {
 .deleteButton {
   background-color: #dc3545;
   color: #fff;
+  margin-left: 10px;
 }
 
 .deleteButton:hover {
